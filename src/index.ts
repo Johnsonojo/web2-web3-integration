@@ -25,12 +25,16 @@ async function startServer() {
     apolloServer.applyMiddleware({ app });
 
     app.listen(PORT, () => {
-         if (process.env.NODE_ENV === 'production') {
-           console.log(`🚀 Server ready at ${apolloServer.graphqlPath}`);
-         } else {
-           console.log(`🚀 Server ready at ${PROTOCOL}://${HOST}:${PORT}${apolloServer.graphqlPath}`);
-         }
-       });
+      if (process.env.NODE_ENV === "production") {
+        console.log(
+          `🚀 Server ready at ${PROTOCOL}://${HOST}${apolloServer.graphqlPath}`
+        );
+      } else {
+        console.log(
+          `🚀 Server ready at ${PROTOCOL}://${HOST}:${PORT}${apolloServer.graphqlPath}`
+        );
+      }
+    });
   } catch (error) {
     console.error("Failed to start server:", error);
     process.exit(1);
