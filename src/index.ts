@@ -12,13 +12,16 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    cache: "bounded",
   });
 
   await server.start();
   server.applyMiddleware({ app });
-
-  app.listen({ port: 4000 }, () =>
-    console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+  const port = process.env.PORT || 4000;
+  const host = process.env.NODE_ENV === 'production' ? process.env.HOST_URL : 'localhost';
+  const protocol = host === 'localhost' ? 'http' : 'https';
+  app.listen({ port }, () =>
+    console.log(`Server ready at ${protocol}://${host}:${port}${server.graphqlPath}`)
   );
 };
 
